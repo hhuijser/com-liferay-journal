@@ -39,7 +39,7 @@ public class JournalPortletRatingsDefinition
 	@Override
 	public String getPortletId() {
 		return PortletProviderUtil.getPortletId(
-			JournalArticle.class.getName(), PortletProvider.Action.EDIT);
+			JournalArticle.class.getName(), PortletProvider.Action.EDDDDDDDDDDDDIT);
 	}
 
 }
