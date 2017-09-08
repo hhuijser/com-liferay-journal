@@ -62,8 +62,8 @@ public interface JournalServiceConfiguration {
 	)
 	public String errorTemplateXSL();
 
-	@Meta.AD(deflt = "86400000", required = false)
-	public long checkInterval();
+	@Meta.AD(deflt = "15", required = false)
+	public int checkInterval();
 
 	@Meta.AD(
 		deflt = "", description = "journal-article-custom-token-names",
@@ -96,8 +96,12 @@ public interface JournalServiceConfiguration {
 	)
 	public boolean expireAllArticleVersionsEnabled();
 
+	/**
+	 * @deprecated As of 4.0.0, with no direct replacement
+	 */
+	@Deprecated
 	@Meta.AD(
-		deflt = "false", description = "journal-article-view-permission-check",
+		deflt = "true", description = "journal-article-view-permission-check",
 		required = false
 	)
 	public boolean articleViewPermissionsCheckEnabled();

@@ -75,14 +75,17 @@ public class JournalContentExportImportPortletPreferencesProcessor
 
 	@Override
 	public List<Capability> getExportCapabilities() {
-		return null;
+		return ListUtil.toList(
+			new Capability[] {
+				_journalContentMetadataExporterImporterCapability
+			});
 	}
 
 	@Override
 	public List<Capability> getImportCapabilities() {
 		return ListUtil.toList(
 			new Capability[] {
-				_journalContentMetadataImporterCapability,
+				_journalContentMetadataExporterImporterCapability,
 				_referencedStagedModelImporterCapability
 			});
 	}
@@ -147,17 +150,22 @@ public class JournalContentExportImportPortletPreferencesProcessor
 			portletDataContext.setScopeGroupId(articleGroupId);
 		}
 
+		JournalArticle article = null;
+
 		JournalArticleResource journalArticleResource =
 			_journalArticleResourceLocalService.fetchArticleResource(
 				articleGroupId, articleId);
 
-		int[] statuses = new int[] {
-			WorkflowConstants.STATUS_APPROVED, WorkflowConstants.STATUS_EXPIRED,
-			WorkflowConstants.STATUS_SCHEDULED
-		};
+		if (journalArticleResource != null) {
+			int[] statuses = new int[] {
+				WorkflowConstants.STATUS_APPROVED,
+				WorkflowConstants.STATUS_EXPIRED,
+				WorkflowConstants.STATUS_SCHEDULED
+			};
 
-		JournalArticle article = _journalArticleLocalService.fetchLatestArticle(
-			journalArticleResource.getResourcePrimKey(), statuses);
+			article = _journalArticleLocalService.fetchLatestArticle(
+				journalArticleResource.getResourcePrimKey(), statuses);
+		}
 
 		if (article == null) {
 			if (_log.isWarnEnabled()) {
@@ -369,8 +377,8 @@ public class JournalContentExportImportPortletPreferencesProcessor
 		_journalArticleResourceLocalService;
 
 	@Reference
-	private JournalContentMetadataImporterCapability
-		_journalContentMetadataImporterCapability;
+	private JournalContentMetadataExporterImporterCapability
+		_journalContentMetadataExporterImporterCapability;
 
 	@Reference(unbind = "-")
 	private JournalContentSearchLocalService _journalContentSearchLocalService;
